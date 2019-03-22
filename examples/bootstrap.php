@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 /*
- * This is a quick and dirty bootstrap so you can drop this repository into any code base 
- * and test proof of concept.
+ * This is a quick and dirty bootstrap so you should be able to drop this directory into any 
+ * PHP enabled environment to run a proof of concept. 
  */
  
 namespace App\Infrastructure\Http;

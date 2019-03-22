@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http;
 
 /*
- * This class converts PHP League's Fractal JSON Api Serializer HTTP packets into more usable PHP objects.
- * See more here: https://fractal.thephpleague.com/serializers/
+ * This class converts PHP League's Fractal JSON Api Serializer resources into PHP entity objects.
+ * See more about Fractal here: https://fractal.thephpleague.com/serializers/
  */
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
