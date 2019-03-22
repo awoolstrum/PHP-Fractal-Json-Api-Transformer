@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http;
 
 /*
+ * This class converts PHP League's Fractal JSON Api Serializer resources into PHP entity objects.
  * See more about Fractal here: https://fractal.thephpleague.com/serializers/
  */
 use Exception;
