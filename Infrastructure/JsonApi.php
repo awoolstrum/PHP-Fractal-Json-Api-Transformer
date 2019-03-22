@@ -26,32 +26,32 @@ final class JsonApi
 	private $relationships;
 	private $transformers;
 	
-    public function assertJson(string $input, $message = null) : array
-    {
-        if (mb_substr($input, 0, 1) !== '{') {
-            throw new Exception($message ?? 'The input was not a valid JSON string.');
-        }
-        $json = json_decode($input, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception($message ?? 'The JSON was not formatted properly.');
-        }
-        return $json;
-    }
+	public function assertJson(string $input, $message = null) : array
+	{
+		if (mb_substr($input, 0, 1) !== '{') {
+			throw new Exception($message ?? 'The input was not a valid JSON string.');
+		}
+		$json = json_decode($input, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new Exception($message ?? 'The JSON was not formatted properly.');
+		}
+		return $json;
+	}
 	
-    public function transform(string $jsonInput) 
-    {
-        $arr = $this->assertJson(trim($jsonInput));
+	public function transform(string $jsonInput) 
+	{
+		$arr = $this->assertJson(trim($jsonInput));
 		
 		if (isset($arr['included'])) {
 			$this->retrieveIncludes($arr['included']);			
 		}
 		
-        $baseObject = $this->retrieveDocument($arr['data']);
+		$baseObject = $this->retrieveDocument($arr['data']);
 		
 		$this->loadRelationships();
 		
 		return $baseObject;
-    }
+	}
 
 	/*
 	 * The Fractal library has an unresolved condition when one item can have one or many relationships
@@ -61,41 +61,41 @@ final class JsonApi
 	 * may or may not be part of a region grouping in that franchise, and each region needs to know its 
 	 * relationships to coffee shops. 
 	 */ 
-    public function mergeCollections(array $base, array $supplement) : array
-    {
-        if (! is_array($supplement['data'])) {
-            return $base;
-        }
-        if (! is_array($base['included'])) {
-            return $base;
-        }
+	public function mergeCollections(array $base, array $supplement) : array
+	{
+		if (! is_array($supplement['data'])) {
+			return $base;
+		}
+		if (! is_array($base['included'])) {
+			return $base;
+		}
 
-        foreach ($base['included'] as $index => $includedResource) {
-            foreach ($supplement['data'] as $supplementIndex => $supplementResource) {
-                if ($includedResource['type'] !== $supplementResource['type']
-                    || $includedResource['id'] !== $supplementResource['id']
-                ) {
-                    continue;
-                }
+		foreach ($base['included'] as $index => $includedResource) {
+			foreach ($supplement['data'] as $supplementIndex => $supplementResource) {
+				if ($includedResource['type'] !== $supplementResource['type']
+					|| $includedResource['id'] !== $supplementResource['id']
+				) {
+					continue;
+				}
 
-                if (isset($supplementResource['relationships'])) {
-                    $base['included'][$index]['relationships'] = $supplementResource['relationships'];
-                }
+				if (isset($supplementResource['relationships'])) {
+					$base['included'][$index]['relationships'] = $supplementResource['relationships'];
+				}
 
-                $base['included'][$index]['attributes'] = array_merge(
-                    $supplementResource['attributes'],
-                    $includedResource['attributes']
-                );
-            }
-        }
+				$base['included'][$index]['attributes'] = array_merge(
+					$supplementResource['attributes'],
+					$includedResource['attributes']
+				);
+			}
+		}
 
-        return $base;
-    }
+		return $base;
+	}
 
-    public function request(Request $request)
-    {
-        return $this->transform($request->getContent());
-    }
+	public function request(Request $request)
+	{
+		return $this->transform($request->getContent());
+	}
 	
 	public function transformer(string $resourceType, JsonApiTransformerInterface $transformer) {
 		$this->transformers[$resourceType] = $transformer;
@@ -139,24 +139,24 @@ final class JsonApi
 	
 	protected function extract(array $document) : JsonApiEntityInterface
 	{
-        $results = [];
+		$results = [];
 		
-        if (isset($document['type'])) {
-            $results['type'] = $document['type'];
-        }
+		if (isset($document['type'])) {
+			$results['type'] = $document['type'];
+		}
 		
-        if (isset($document['id'])) {
-            $results['id'] = $document['id'];
-        }
+		if (isset($document['id'])) {
+			$results['id'] = $document['id'];
+		}
 		
-        if (isset($document['attributes']) && ! empty($document['attributes'])) {
-            foreach ($document['attributes'] as $k => $v) {
-                // we have a nested document
-                $results[$k] = is_array($v)
-                    ? $this->retrieveDocument($v)
-                    : $v;
-            }
-        }
+		if (isset($document['attributes']) && ! empty($document['attributes'])) {
+			foreach ($document['attributes'] as $k => $v) {
+				// we have a nested document
+				$results[$k] = is_array($v)
+					? $this->retrieveDocument($v)
+					: $v;
+			}
+		}
 		
 		return $this->load($results);		
 	}
@@ -175,30 +175,30 @@ final class JsonApi
 		return $this->transformers[$flattenedArray['type']]->load($flattenedArray);		
 	}
 	
-    protected function retrieveDocument($data) 
-    {
-        if (! $this->isCollection($data)) {
-            return $this->retrieveItem($data);
-        }
-        return $this->retrieveCollection($data);
-    }
+	protected function retrieveDocument($data) 
+	{
+		if (! $this->isCollection($data)) {
+			return $this->retrieveItem($data);
+		}
+		return $this->retrieveCollection($data);
+	}
 	
-    protected function isCollection(array $arr) : bool
-    {
-        if (isset($arr[0])) {
-            return true;
-        }
-        return false;
-    }
+	protected function isCollection(array $arr) : bool
+	{
+		if (isset($arr[0])) {
+			return true;
+		}
+		return false;
+	}
 
-    protected function retrieveCollection(array $collection) : array
-    {
-        $results = [];
-        foreach ($collection as $i => $item) {
-            $results[$i] = $this->retrieveItem($item);
-        }
-        return $results;
-    }
+	protected function retrieveCollection(array $collection) : array
+	{
+		$results = [];
+		foreach ($collection as $i => $item) {
+			$results[$i] = $this->retrieveItem($item);
+		}
+		return $results;
+	}
 	
 	protected function retrieveIncludes($included)
 	{
@@ -211,11 +211,11 @@ final class JsonApi
 		}
 	}
 
-    protected function retrieveItem(array $item) : JsonApiEntityInterface
-    {
-        if (empty($item)) {
-            return null;
-        }
+	protected function retrieveItem(array $item) : JsonApiEntityInterface
+	{
+		if (empty($item)) {
+			return null;
+		}
 		
 		$this->entityObjects[$item['type']][$item['id']] = $this->extract($item);
 		
@@ -224,7 +224,7 @@ final class JsonApi
 		}
 		
 		return $this->entityObjects[$item['type']][$item['id']];
-    }
+	}
 	
 	protected function loadRelationships() 
 	{

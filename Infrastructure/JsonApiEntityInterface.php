@@ -6,5 +6,4 @@ namespace App\Infrastructure\Http;
 
 interface JsonApiEntityInterface 
 {
-//	public function relationships(array $array);
 }
