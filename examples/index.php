@@ -51,7 +51,7 @@ class ExamplesOfUsage extends Responder {
 		$locationsJson = $this->fractal->createData($locationsResource)->toJson();
 
 		$jsonApi = new JsonApi();
-		$newResource = $jsonApi->mergeCollections(json_decode($franchiseJson, true), json_decode($locationsJson, true));
+		$newResource = $jsonApi->mergeResources(json_decode($franchiseJson, true), json_decode($locationsJson, true));
 
 		return json_encode($newResource);
 	}

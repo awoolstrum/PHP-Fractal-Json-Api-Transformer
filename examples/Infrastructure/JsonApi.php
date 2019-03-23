@@ -61,7 +61,7 @@ final class JsonApi
 	 * may or may not be part of a region grouping in that franchise, and each region needs to know its 
 	 * relationships to coffee shops. 
 	 */ 
-	public function mergeCollections(array $base, array $supplement) : array
+	public function mergeResources(array $base, array $supplement) : array
 	{
 		if (! is_array($supplement['data'])) {
 			return $base;
