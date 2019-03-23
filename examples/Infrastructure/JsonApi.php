@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http;
+namespace awoolstrum\JsonApi;
 
 /*
  * This class converts PHP League's Fractal JSON Api Serializer resources into PHP entity objects.
@@ -10,8 +10,8 @@ namespace App\Infrastructure\Http;
  */
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
-use App\Infrastructure\Http\JsonApiTransformerInterface;
-use App\Infrastructure\Http\JsonApiEntityInterface;
+use awoolstrum\JsonApi\JsonApiTransformerInterface;
+use awoolstrum\JsonApi\JsonApiEntityInterface;
 use const JSON_ERROR_NONE;
 use function array_merge;
 use function is_array;

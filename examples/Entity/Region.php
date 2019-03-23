@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http;
+namespace App\Entity;
 
-use App\Infrastructure\Http\JsonApiEntityInterface;
+use awoolstrum\JsonApi\JsonApiEntityInterface;
 
 class Region implements JsonApiEntityInterface
 {

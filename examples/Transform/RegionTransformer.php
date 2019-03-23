@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http;
+namespace App\Transformer;
 
 use League\Fractal\TransformerAbstract;
-use App\Infrastructure\Http\Region;
+use App\Entity\Region;
+use awoolstrum\JsonApi\JsonApiTransformerInterface;
 
 final class RegionTransformer extends TransformerAbstract implements JsonApiTransformerInterface
 {

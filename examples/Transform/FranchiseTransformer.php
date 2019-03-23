@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http;
+namespace App\Transformer;
 
 use League\Fractal\TransformerAbstract;
-use App\Infrastructure\Http\Franchise;
-use App\Infrastructure\Http\CoffeeShop;
-use App\Infrastructure\Http\RegionTransformer;
-use App\Infrastructure\Http\CoffeeShopTransformer;
+use App\Entity\Franchise;
+use App\Entity\CoffeeShop;
+use App\Transformer\RegionTransformer;
+use App\Transformer\CoffeeShopTransformer;
+use awoolstrum\JsonApi\JsonApiTransformerInterface;
 
 final class FranchiseTransformer extends TransformerAbstract implements JsonApiTransformerInterface
 {

@@ -5,13 +5,14 @@ namespace App\Infrastructure\Http;
 
 require('bootstrap.php');
 
-use App\Infrastructure\Http\Responder;
-use App\Infrastructure\Http\CoffeeShop;
-use App\Infrastructure\Http\Franchise;
-use App\Infrastructure\Http\Region;
-use App\Infrastructure\Http\CoffeeShopTransformer;
-use App\Infrastructure\Http\FranchiseTransformer;
-use App\Infrastructure\Http\RegionTransformer;
+use App\Responder\Responder;
+use App\Entity\CoffeeShop;
+use App\Entity\Franchise;
+use App\Entity\Region;
+use App\Transformer\CoffeeShopTransformer;
+use App\Transformer\FranchiseTransformer;
+use App\Transformer\RegionTransformer;
+use awoolstrum\JsonApi\JsonApi;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
@@ -55,12 +56,8 @@ class ExamplesOfUsage extends Responder {
 		return json_encode($newResource);
 	}
 	
-	public function parseJsonApi()
+	public function transform(string $json)
 	{
-		$json = $this->prepareSimpleRelationship();
-//		$json = $this->prepareComplexRelationships();
-		echo $json;
-
 		$jsonApi = new JsonApi();
 		$jsonApi->transformer('franchise', new FranchiseTransformer);
 		$jsonApi->transformer('location', new CoffeeShopTransformer);
@@ -73,4 +70,14 @@ class ExamplesOfUsage extends Responder {
 }
 
 $test = new ExamplesOfUsage;
-$test->parseJsonApi();
+echo '<h1>Example of a 1:1 Relationship</h1>';
+echo '<h2>JSON complying with JSON API specifications prepared using Fractal</h2>';
+echo $test->prepareSimpleRelationship();
+echo '<h2>Objects extracted, transformed and loaded from the JSON API string</h2>';
+$test->transform($test->prepareSimpleRelationship());
+
+echo '<h1>Example of Complex Many-to-Many-to-Many Relationships</h1>';
+echo '<h2>JSON complying with JSON API specifications prepared using Fractal</h2>';
+echo $test->prepareComplexRelationships();
+echo '<h2>Objects extracted, transformed and loaded from the JSON API string.</h2>';
+$test->transform($test->prepareComplexRelationships());

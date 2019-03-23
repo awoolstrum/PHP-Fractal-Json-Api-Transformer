@@ -7,7 +7,7 @@ declare(strict_types=1);
  * PHP enabled environment to run a proof of concept. 
  */
  
-namespace App\Infrastructure\Http;
+namespace App;
 
 spl_autoload_register(function ($class) {
     $prefix = 'League\\Fractal\\';

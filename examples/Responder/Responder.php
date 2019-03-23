@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http;
+namespace App\Responder;
 
 use League\Fractal;
 use League\Fractal\Manager;
